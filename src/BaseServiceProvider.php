@@ -4,9 +4,11 @@ namespace Petrelli\LiveStatics;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\AliasLoader;
 
 use Petrelli\LiveStatics\Commands\CreateMockedModel;
 use Petrelli\LiveStatics\Commands\CreateMockedClass;
+use Petrelli\LiveStatics\Facades\DynamicParams;
 
 class BaseServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,9 @@ class BaseServiceProvider extends ServiceProvider
 
         // Register command to publish the configuration file
         $this->publishConfig();
+
+        // Load extra views - Specifically for the dynamic menu
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'live-statics');
 
     }
 
@@ -79,6 +84,14 @@ class BaseServiceProvider extends ServiceProvider
             CreateMockedModel::class,
             CreateMockedClass::class
         ]);
+
+        // Bind the Dynamic manager to store
+        $this->app->singleton('live-statics.manager', function($app) {
+            return new DynamicManager();
+        });
+
+        // Register dynamic fields manager Facade
+        AliasLoader::getInstance()->alias('DynamicParams', DynamicParams::class);
 
     }
 

@@ -128,6 +128,39 @@ return [
 
 
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dynamic fields
+    |--------------------------------------------------------------------------
+    |
+    | When generating dynamic fields to changed later at the statics, we use URL
+    | parameters, and all of them will be prefixed by this
+    |
+    */
+
+    'dynamic_fields' => [
+
+        'enabled' => false,
+
+        'prefix' => 'static',
+
+        // Supported formatters for dynamic fields using Faker
+        'supported' => [
+            'sentence',
+            'text',
+        ],
+
+        // Default values to control using the generated dynamic menu
+        'defaults' => [
+            'sentence'  => [ 'min' => 3, 'max' => 200 ],
+            'text' => [ 'min' => 3, 'max' => 2000 ]
+        ]
+
+    ],
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Addons
