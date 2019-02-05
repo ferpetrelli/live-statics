@@ -2,7 +2,7 @@
 
   <form action="">
 
-  @foreach (DynamicParams::parametersByType() as $type => $fields)
+  @foreach (DynamicManager::parametersByType() as $type => $fields)
 
     @switch($type)
       @case('sentence')

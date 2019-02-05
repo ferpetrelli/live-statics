@@ -1,33 +1,18 @@
 <?php
 
-namespace Petrelli\LiveStatics;
+namespace Petrelli\LiveStatics\Helpers;
 
 class DynamicManager
 {
 
-    // Array to save all of our used dynamic fields
-    protected $dynamicFields = [
-        // Structure will be:
-        // 'type' => [
-        //   [ \StdClass(), \StdClass(), \StdClass(), ... ]
-        // ]
-        //
-        // \StdClass() object will contain:
-        //   - name
-        //   - parameters
-    ];
+    // Array to save all of our registres dynamic fields
+    protected $dynamicFields = [];
 
 
     public function addField($type, $name)
     {
 
-        if (!in_array($type, config('live-statics.dynamic_fields.supported'))) {
-            // Throw new exception if this formatter is not supported
-            throw new \InvalidArgumentException(sprintf('Faker Formatter not supported "%s". Please add it to dynamic_fields.supported at your live-statics configuration file', $type));
-        }
-
-
-
+        // Do not register the same field twice
         $exists = collect($this->dynamicFields)->first(function ($item, $key) use ($type, $name) {
             return $item->paramName == $this->resolveParameterName($type, $name);
         });
@@ -35,7 +20,7 @@ class DynamicManager
         if ($exists) { return; }
 
 
-        // Move to a class
+        // TODO: Move to a class
         $field = new \StdClass();
         $field->name = $name;
         $field->type = $type;
@@ -61,6 +46,22 @@ class DynamicManager
     {
 
         return $this->parameters()->groupBy('type');
+
+    }
+
+
+    public function hasParameter($type, $element)
+    {
+
+        return request()->has($this->resolveParameterName($type, $element));
+
+    }
+
+
+    public function getParameter($type, $element)
+    {
+
+        return request()->get($this->resolveParameterName($type, $element), null);
 
     }
 

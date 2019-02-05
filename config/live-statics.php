@@ -153,7 +153,7 @@ return [
 
         // Default values to control using the generated dynamic menu
         'defaults' => [
-            'sentence'  => [ 'min' => 3, 'max' => 200 ],
+            'sentence'  => [ 'min' => 3, 'max' => 20 ],
             'text' => [ 'min' => 3, 'max' => 2000 ]
         ]
 

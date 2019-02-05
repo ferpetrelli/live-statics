@@ -9,6 +9,8 @@ use Illuminate\Foundation\AliasLoader;
 use Petrelli\LiveStatics\Commands\CreateMockedModel;
 use Petrelli\LiveStatics\Commands\CreateMockedClass;
 use Petrelli\LiveStatics\Facades\DynamicParams;
+use Petrelli\LiveStatics\Helpers\DynamicManager;
+use Petrelli\LiveStatics\Helpers\Faker\Factory as MiddlewareFactory;
 
 class BaseServiceProvider extends ServiceProvider
 {
@@ -56,6 +58,9 @@ class BaseServiceProvider extends ServiceProvider
     public function register()
     {
 
+        // Merge configurations
+        $this->mergeConfigs();
+
         // Enable mocked elements when the configured subdomain is present
         // Also save which version we are trying to load
 
@@ -72,6 +77,15 @@ class BaseServiceProvider extends ServiceProvider
             'version' => $version,
         ])]);
 
+
+        // Bind Dynamic manager for attributes
+        $this->app->singleton('live-statics.manager', function($app) {
+            return new DynamicManager();
+        });
+
+        // Register dynamic fields manager Facade
+        AliasLoader::getInstance()->alias('DynamicManager', DynamicParams::class);
+
         // Bind helper libraries to be used when mocking entities
         $this->bindHelpers($version);
 
@@ -84,14 +98,6 @@ class BaseServiceProvider extends ServiceProvider
             CreateMockedModel::class,
             CreateMockedClass::class
         ]);
-
-        // Bind the Dynamic manager to store
-        $this->app->singleton('live-statics.manager', function($app) {
-            return new DynamicManager();
-        });
-
-        // Register dynamic fields manager Facade
-        AliasLoader::getInstance()->alias('DynamicParams', DynamicParams::class);
 
     }
 
@@ -170,7 +176,7 @@ class BaseServiceProvider extends ServiceProvider
     {
 
         $this->app->singleton('faker', function ($app) use ($version) {
-            $faker = \Faker\Factory::create();
+            $faker = MiddlewareFactory::create();
 
             // Add all providers specified at the configuration file.
             // If you want to extend this functionality please refer to
@@ -204,6 +210,14 @@ class BaseServiceProvider extends ServiceProvider
         Blade::directive('endnonstatic', function ($key) {
             return "<?php endif; ?>";
         });
+
+    }
+
+
+    private function mergeConfigs()
+    {
+
+        $this->mergeConfigFrom(__DIR__ . '/../config/live-statics.php', 'live-statics');
 
     }
 
