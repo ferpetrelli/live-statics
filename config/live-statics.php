@@ -145,12 +145,6 @@ return [
 
         'prefix' => 'static',
 
-        // Supported formatters for dynamic fields using Faker
-        'supported' => [
-            'sentence',
-            'text',
-        ],
-
         // Default values to control using the generated dynamic menu
         'defaults' => [
             'sentence'  => [ 'min' => 3, 'max' => 20 ],
