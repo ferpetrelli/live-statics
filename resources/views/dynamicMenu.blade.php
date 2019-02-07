@@ -1,27 +1,29 @@
 <div id="statics-controls">
-
   <form action="">
+    @foreach (DynamicManager::parametersByType() as $type => $fields)
+      @switch($type)
+        @case('sentence')
+          @foreach ($fields as $field)
+            <div class="static-element-container">
+              <p>{{ $field->name() }} (Number of words): <span data-name="{{ $field->parameterName() }}">{{ $field->value() }}</span></p>
+              <input data-input type="range" min="{{ $field->edgeValues()['min'] }}" max="{{ $field->edgeValues()['max'] }}" value="{{ $field->value() }}" class="slider" name="{{ $field->parameterName() }}">
+            </div>
+          @endforeach
+          @break
+        @case('text')
+          @foreach ($fields as $field)
+            <div class="static-element-container">
+              <p>{{ $field->name() }} (Number of characters): <span data-name="{{ $field->parameterName() }}">{{ $field->value() }}</span></p>
+              <input data-input type="range" min="{{ $field->edgeValues()['min'] }}" max="{{ $field->edgeValues()['max'] }}" value="{{ $field->value() }}" class="slider" name="{{ $field->parameterName() }}">
+            </div>
+          @endforeach
+          @break
+      @endswitch
+    @endforeach
 
-  @foreach (DynamicManager::parametersByType() as $type => $fields)
-
-    @switch($type)
-      @case('sentence')
-      @case('text')
-        @foreach ($fields as $field)
-          <div class="static-element-container">
-            <p>{{ $field->name }}: <span data-name="{{ $field->paramName }}">{{ $field->value }}</span></p>
-            <input data-input type="range" min="{{ $field->defaultValues['min'] }}" max="{{ $field->defaultValues['max'] }}" value="{{ $field->value }}" class="slider" name="{{ $field->paramName }}">
-          </div>
-        @endforeach
-      @break
-    @endswitch
-
-  @endforeach
-
-  <input id="static-submit" type="submit" />
+    <input id="static-submit" type="submit" />
 
   </form>
-
 </div>
 
 
@@ -38,6 +40,8 @@
 </span>
 
 
+{{-- Style definitions for the menu --}}
+
 <style>
 
 .design-grid-toggle--statics {
@@ -53,7 +57,6 @@
   display: none;
   position: fixed; /* Sit on top of the page content */
   width: 500px; /* Full width (cover the whole page) */
-  height: 50%; /* Full height (cover the whole page) */
   right: 0;
   bottom: 100px;
   background-color: rgb(0,0,0); /* Black background with opacity */
@@ -88,8 +91,7 @@
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
     width: 100%; /* Full-width */
-    height: 15px; /* Specified height */
-    background: #d3d3d3; /* Grey background */
+    height: 5px; /* Specified height */
     outline: none; /* Remove outline */
     opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
@@ -106,47 +108,51 @@
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
+    width: 15px; /* Set a specific slider handle width */
+    height: 15px; /* Slider handle height */
     border-radius: 50%;
-    background: #4CAF50; /* Green background */
+    background: #83ff6d; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px;
+    width: 15px; /* Set a specific slider handle width */
+    height: 15px;
     border-radius: 50%;
-    background: #4CAF50; /* Green background */
+    background: #83ff6d; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
 
 </style>
 
+
+
+{{-- Javascript in charge of showing/hiding elements, as well as managing the handles --}}
+
 <script>
 
-let sliders = document.querySelectorAll('input.slider');
-var urlParams = new URLSearchParams(window.location.search);
-
-function _handleSliderValue(e) {
-  document.querySelector('[data-name="' + e.target.name + '"]').innerHTML = e.target.value;
-}
-
-// Init sliders
-var arrLength = sliders.length;
-
-for (var i = 0; i < arrLength; i++) {
-  var value = urlParams.get(sliders[i].name);
-
-  if (value) {
-    sliders[i].value = value;
-
-    document.querySelector('[data-name="' + sliders[i].name + '"]').innerHTML = value;
+  function _handleSliderValue(e) {
+    document.querySelector('[data-name="' + e.target.name + '"]').innerHTML = e.target.value;
   }
-}
 
-for (var i = 0; i < arrLength; i++) {
-  sliders[i].addEventListener('input', _handleSliderValue, false);
-}
+  let sliders = document.querySelectorAll('input.slider');
+  var urlParams = new URLSearchParams(window.location.search);
+
+  // Init sliders
+  var arrLength = sliders.length;
+
+  for (var i = 0; i < arrLength; i++) {
+    var value = urlParams.get(sliders[i].name);
+
+    if (value) {
+      sliders[i].value = value;
+
+      document.querySelector('[data-name="' + sliders[i].name + '"]').innerHTML = value;
+    }
+  }
+
+  for (var i = 0; i < arrLength; i++) {
+    sliders[i].addEventListener('input', _handleSliderValue, false);
+  }
 
 </script>

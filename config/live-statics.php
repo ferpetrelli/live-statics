@@ -143,9 +143,9 @@ return [
 
         'enabled' => false,
 
-        'prefix' => 'static',
+        'prefix' => 'ls',
 
-        // Default values to control using the generated dynamic menu
+        // Edge values for form controls
         'defaults' => [
             'sentence'  => [ 'min' => 3, 'max' => 20 ],
             'text' => [ 'min' => 3, 'max' => 2000 ]

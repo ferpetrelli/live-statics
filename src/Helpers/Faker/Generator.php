@@ -29,6 +29,7 @@ class Generator extends \Faker\Generator
     public function __call($method, $attributes)
     {
 
+        // If we called dynamic before, capture the call and treat it as a dynamic field
         if ($this->dynamicFlag) {
 
             // Check Faker method is supported
