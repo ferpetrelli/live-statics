@@ -27,6 +27,9 @@ class BookMock extends BaseMock implements BookInterface
 		$mock->title       = 'Mocked Book';
 		$mock->slug        = str_slug($mock->title);
 
+        // Dynamic attributes
+        $mock->description = app('faker')->dynamic('Description')->text(1000);
+
 	}
 
 

@@ -128,6 +128,33 @@ return [
 
 
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dynamic fields
+    |--------------------------------------------------------------------------
+    |
+    | When generating dynamic fields, we use URL parameters to modify them
+    | These are the options to configure them
+    |
+    */
+
+    'dynamic_fields' => [
+
+        'enabled' => false,
+
+        'prefix' => 'ls',
+
+        // Edge values for form controls
+        'defaults' => [
+            'sentence'  => [ 'min' => 3, 'max' => 20 ],
+            'text' => [ 'min' => 250, 'max' => 2000 ]
+        ]
+
+    ],
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Addons
