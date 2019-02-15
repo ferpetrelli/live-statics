@@ -140,4 +140,33 @@ class BaseMockTest extends \Orchestra\Testbench\TestCase
     }
 
 
+    public function testDynamicManagerFacadeConnection()
+    {
+
+        $this->assertInstanceOf(\Petrelli\LiveStatics\Helpers\DynamicManager::class, \DynamicManager::getFacadeRoot());
+
+    }
+
+
+    public function testDefinedDynamicParameter()
+    {
+
+        $this->assertNotNull($this->video->description);
+        $this->assertCount(1, \DynamicManager::parameters());
+        $this->assertInstanceOf(\Petrelli\LiveStatics\Helpers\Faker\DynamicField::class, \DynamicManager::parameters()->first());
+        $this->assertEquals(\DynamicManager::parameters()->first()->name(), 'Description');
+
+    }
+
+
+    public function testUniquenessDynamicParameter()
+    {
+
+        $this->assertNotNull($this->video->description);
+        $this->assertNotNull($this->book->description);
+        $this->assertCount(1, \DynamicManager::parameters());
+
+    }
+
+
 }

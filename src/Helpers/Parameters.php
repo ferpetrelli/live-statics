@@ -4,13 +4,13 @@ namespace Petrelli\LiveStatics\Helpers;
 
 /**
  *
- * Helpers to resolve parameter names and to
- * retrieve data
+ * Helpers to resolve parameter names and their data
  *
  */
 
 class Parameters
 {
+
 
     public static function resolveName($type, $element)
     {

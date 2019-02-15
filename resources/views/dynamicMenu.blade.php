@@ -5,16 +5,40 @@
         @case('sentence')
           @foreach ($fields as $field)
             <div class="static-element-container">
-              <p>{{ $field->name() }} (Number of words): <span data-name="{{ $field->parameterName() }}">{{ $field->value() }}</span></p>
-              <input data-input type="range" min="{{ $field->edgeValues()['min'] }}" max="{{ $field->edgeValues()['max'] }}" value="{{ $field->value() }}" class="slider" name="{{ $field->parameterName() }}">
+              <p>{{ $field->name() }} (Number of words): <span data-name="{{ $field->parameterName() }}">{{ request()->has($field->parameterName()) ? $field->value() : $field->edgeValues()['min'] }}</span></p>
+              <input
+                data-input
+                type="range"
+                class="slider"
+                min="{{ $field->edgeValues()['min'] }}"
+                max="{{ $field->edgeValues()['max'] }}"
+                name="{{ $field->parameterName() }}"
+                @if(request()->has($field->parameterName()))
+                  value="{{ $field->value() }}"
+                @else
+                  value="{{ $field->edgeValues()['min'] }}"
+                @endif
+              />
             </div>
           @endforeach
           @break
         @case('text')
           @foreach ($fields as $field)
             <div class="static-element-container">
-              <p>{{ $field->name() }} (Number of characters): <span data-name="{{ $field->parameterName() }}">{{ $field->value() }}</span></p>
-              <input data-input type="range" min="{{ $field->edgeValues()['min'] }}" max="{{ $field->edgeValues()['max'] }}" value="{{ $field->value() }}" class="slider" name="{{ $field->parameterName() }}">
+              <p>{{ $field->name() }} (Number of characters): <span data-name="{{ $field->parameterName() }}">{{ request()->has($field->parameterName()) ? $field->value() : $field->edgeValues()['min'] }}</span></p>
+              <input
+                data-input
+                type="range"
+                class="slider"
+                min="{{ $field->edgeValues()['min'] }}"
+                max="{{ $field->edgeValues()['max'] }}"
+                @if(request()->has($field->parameterName()))
+                  value="{{ $field->value() }}"
+                @else
+                  value="{{ $field->edgeValues()['min'] }}"
+                @endif
+                name="{{ $field->parameterName() }}"
+              />
             </div>
           @endforeach
           @break

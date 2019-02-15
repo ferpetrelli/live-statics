@@ -148,7 +148,7 @@ return [
         // Edge values for form controls
         'defaults' => [
             'sentence'  => [ 'min' => 3, 'max' => 20 ],
-            'text' => [ 'min' => 3, 'max' => 2000 ]
+            'text' => [ 'min' => 250, 'max' => 2000 ]
         ]
 
     ],

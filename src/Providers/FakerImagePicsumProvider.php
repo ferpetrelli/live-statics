@@ -5,6 +5,13 @@ namespace Petrelli\LiveStatics\Providers;
 use Faker\Provider\Base as BaseProvider;
 
 
+/**
+ *
+ * Faker picsum image provider
+ *
+ */
+
+
 class FakerImagePicsumProvider extends BaseProvider
 {
 

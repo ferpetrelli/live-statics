@@ -5,6 +5,14 @@ namespace Petrelli\LiveStatics\Helpers\Faker;
 use Petrelli\LiveStatics\Helpers\Parameters;
 
 
+/**
+ *
+ * Simple class to store a dynamic parameter definition
+ *
+ * Used for future enhancements.
+ *
+ */
+
 class DynamicField
 {
 

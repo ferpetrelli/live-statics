@@ -30,6 +30,9 @@ class VideoMock extends BaseMock implements VideoInterface
 		$mock->slug        = str_slug($mock->title);
         $mock->url         = 'http://youtube.com';
 
+        // Dynamic attributes
+        $mock->description = app('faker')->dynamic('Description')->text(1000);
+
 	}
 
 

@@ -2,6 +2,17 @@
 
 namespace Petrelli\LiveStatics\Helpers\Faker;
 
+/**
+ *
+ * Faker generator middleware.
+ *
+ * We will use this generator as default, from here we will
+ * hijack the code flow and register our dynamic fields if present.
+ *
+ * From there we will pass all calls to the regular generator
+ * with the default parameters replaced if present.
+ *
+ */
 
 class Generator extends \Faker\Generator
 {
