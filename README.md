@@ -200,6 +200,10 @@ You can change this subdomain modifying the `subdomain` option inside `config/li
 
 Docs to be completed.
 
+## Dynamic parameters
+
+Docs to be completed.
+
 ## Namespaces and directories configuration
 
 Docs to be completed.

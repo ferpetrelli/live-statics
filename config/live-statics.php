@@ -134,8 +134,8 @@ return [
     | Dynamic fields
     |--------------------------------------------------------------------------
     |
-    | When generating dynamic fields to changed later at the statics, we use URL
-    | parameters, and all of them will be prefixed by this
+    | When generating dynamic fields, we use URL parameters to modify them
+    | These are the options to configure them
     |
     */
 
