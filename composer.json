@@ -35,7 +35,7 @@
     "extra": {
       "laravel": {
           "providers": [
-              "Petrelli\\LiveStatics\\BaseServiceprovider"
+              "Petrelli\\LiveStatics\\BaseServiceProvider"
           ]
       }
     },
