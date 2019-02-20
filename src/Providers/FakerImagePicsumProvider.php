@@ -15,7 +15,7 @@ use Faker\Provider\Base as BaseProvider;
 class FakerImagePicsumProvider extends BaseProvider
 {
 
-    protected static $baseUrl = "http://picsum.photos/";
+    protected static $baseUrl = "//picsum.photos/";
 
     protected static $picsumPhotosMaxImageID = 1084;
 
