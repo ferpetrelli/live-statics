@@ -52,7 +52,7 @@
 
 
 {{-- Fixed position button to toggle menu --}}
-<span class="design-grid-toggle design-grid-toggle--statics" onClick="document.getElementById('statics-controls').classList.toggle('statics-controls-visible');" title="Toggle Statics Controls">
+<span class="design-grid-toggle--statics" onClick="document.getElementById('statics-controls').classList.toggle('statics-controls-visible');" title="Toggle Statics Controls">
   <svg enable-background="new 0 0 10 10" version="1.1" viewBox="0 0 10 10" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
     <rect fill="currentColor" width="10" height="1"/>
     <rect fill="currentColor" y="3" width="10" height="1"/>
@@ -101,6 +101,7 @@
 
 .static-element-container p {
   margin-left: 2px;
+  margin-top: 0px;
 }
 
 
