@@ -196,7 +196,7 @@ class BaseServiceProvider extends ServiceProvider
     {
 
         Blade::directive('static', function ($key) {
-            return "<?php if (config('statics.enabled')): ?>";
+            return "<?php if (config('live-statics.enabled')): ?>";
         });
 
         Blade::directive('endstatic', function ($key) {
@@ -204,7 +204,7 @@ class BaseServiceProvider extends ServiceProvider
         });
 
         Blade::directive('nonstatic', function ($key) {
-            return "<?php if (!config('statics.enabled')): ?>";
+            return "<?php if (!config('live-statics.enabled')): ?>";
         });
 
         Blade::directive('endnonstatic', function ($key) {
