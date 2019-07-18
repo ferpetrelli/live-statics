@@ -86,6 +86,14 @@ class BaseServiceProvider extends ServiceProvider
         // Register dynamic fields manager Facade
         AliasLoader::getInstance()->alias('DynamicManager', DynamicParams::class);
 
+        // Bind Class Resolver
+        $this->app->singleton('live-statics.interface-mapper', function($app) {
+            return new InterfaceMapper();
+        });
+
+        // Bind Interface Mapper Facade
+        AliasLoader::getInstance()->alias('InterfaceMapper', InterfaceMapperFacade::class);
+
         // Bind helper libraries to be used when mocking entities
         $this->bindHelpers($version);
 
@@ -144,27 +152,35 @@ class BaseServiceProvider extends ServiceProvider
 
             foreach (config('live-statics.mocked_classes') as $interface => $items) {
 
-                // TODO: Improve how these configuration values are managed
                 $classes = collect($items);
                 $mocked  = $classes->first();
                 $real    = $classes->last();
 
-                $this->app->bind($interface, function () use ($enabled, $version, $mocked, $real) {
-                    if ($enabled) {
+                if ($enabled || (!$enabled && $real)) {
+                    $this->bindVersionedClass($enabled, $version, $interface, $mocked, $real);
+                }
 
-                        if ($version) {
-                            $versionedEntity = $mocked . $version;
+            }
 
-                            if (class_exists($versionedEntity)) {
-                                $mocked = $versionedEntity;
-                            }
-                        }
+        }
 
-                        return $mocked::create();
-                    } else {
-                        return app($real);
-                    }
-                });
+        /**
+         *
+         * Add-on: Build twill blocks
+         *
+         */
+        if (is_array(config('live-statics.twill.blocks'))) {
+
+            foreach (config('live-statics.twill.blocks') as $interface => $items) {
+
+                $classes = collect($items);
+                $mocked  = $classes->first();
+                $real    = $classes->last();
+
+                if ($enabled || (!$enabled && $real)) {
+                    $this->bindVersionedClass($enabled, $version, $interface, $mocked, $real);
+                }
+
             }
 
         }
@@ -187,6 +203,29 @@ class BaseServiceProvider extends ServiceProvider
             }
 
             return $faker;
+        });
+
+    }
+
+
+    protected function bindVersionedClass($enabled, $version, $interface, $mocked, $real)
+    {
+
+        $this->app->bind($interface, function () use ($enabled, $version, $mocked, $real) {
+            if ($enabled) {
+
+                if ($version) {
+                    $versionedEntity = $mocked . $version;
+
+                    if (class_exists($versionedEntity)) {
+                        $mocked = $versionedEntity;
+                    }
+                }
+
+                return $mocked::create();
+            } else {
+                return app($real);
+            }
         });
 
     }
