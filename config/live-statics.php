@@ -160,9 +160,87 @@ return [
     | Addons
     |--------------------------------------------------------------------------
     |
-    | Space reserved to setup Live Statics Addons package if needed
+    | Space reserved to setup Live Statics Addons if needed
     |
     */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Twill helpers
+    |--------------------------------------------------------------------------
+    |
+    | Support for images and the block builder
+    |
+    */
+
+    'twill' => [
+        'default_width'  => 640,
+        'default_height' => 400,
+
+        'blocks' => [
+            Petrelli\LiveStatics\Interfaces\Twill\CarouselBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\CarouselBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\DoubleImageBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\DoubleImageBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\HorizontalLineBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\HorizontalLineBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\ImageBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\ImageBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\IntroBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\IntroBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\ParagraphBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\ParagraphBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\QuoteBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\QuoteBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\SubtitleBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\SubtitleBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\TitleBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\TitleBlockMock::class, null
+            ],
+            Petrelli\LiveStatics\Interfaces\Twill\VideoBlockInterface::class => [
+                Petrelli\LiveStatics\Mocks\Twill\VideoBlockMock::class, null
+            ]
+        ]
+
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Interface mapper
+    |--------------------------------------------------------------------------
+    |
+    | This is just a shortcut for when you want to instantiate interfaces.
+    | A Facade is provided for this task:
+    |
+    | \InterfaceMapper::resolve('twill.carousel')
+    |
+    | will return an instance of Petrelli\LiveStatics\Interfaces\Twill\CarouselBlockInterface::class,
+    |
+    */
+
+    'mapper' => [
+        'twill' => [
+            'carousel'       => Petrelli\LiveStatics\Interfaces\Twill\CarouselBlockInterface::class,
+            'doubleImage'    => Petrelli\LiveStatics\Interfaces\Twill\DoubleImageBlockInterface::class,
+            'horizontalLine' => Petrelli\LiveStatics\Interfaces\Twill\HorizontalLineBlockInterface::class,
+            'image'          => Petrelli\LiveStatics\Interfaces\Twill\ImageBlockInterface::class,
+            'intro'          => Petrelli\LiveStatics\Interfaces\Twill\IntroBlockInterface::class,
+            'paragraph'      => Petrelli\LiveStatics\Interfaces\Twill\ParagraphBlockInterface::class,
+            'quote'          => Petrelli\LiveStatics\Interfaces\Twill\QuoteBlockInterface::class,
+            'subtitle'       => Petrelli\LiveStatics\Interfaces\Twill\SubtitleBlockInterface::class,
+            'title'          => Petrelli\LiveStatics\Interfaces\Twill\TitleBlockInterface::class,
+            'video'          => Petrelli\LiveStatics\Interfaces\Twill\VideoBlockInterface::class,
+        ]
+    ],
 
 
 
