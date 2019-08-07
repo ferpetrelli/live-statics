@@ -4,11 +4,12 @@ namespace Petrelli\LiveStatics\Mocks\Twill;
 
 use Petrelli\LiveStatics\Interfaces\Twill\ImageBlockInterface;
 use Petrelli\LiveStatics\Mocks\Twill\BaseBlockMock;
-
+use Petrelli\LiveStatics\Traits\Twill\HasImages;
 
 class ImageBlockMock extends BaseBlockMock implements ImageBlockInterface
 {
 
+    use HasImages;
 
     public static $baseInterface = ImageBlockInterface::class;
 
