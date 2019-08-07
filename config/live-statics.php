@@ -21,13 +21,13 @@ return [
     | Path configurations
     |--------------------------------------------------------------------------
     |
-    | These variables will control your directory structure
-    | Default values are usually ok for most projects
+    | These variables will control your directory structure.
+    | Default values are usually ok for most projects.
     |
     | Given that these values are used to bind elements and generate new mocks,
-    | do not to modify them once the project has started.
+    | if modified you will have to update your namespaces.
     |
-    | Laravel models don't use namespaces by default, added
+    | Laravel models don't use namespaces by default.
     |
     */
 
@@ -43,7 +43,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | To mock specific classes you will need to add the interface name,
-    | plus the full path to the desired mocked element, and the real class
+    | plus a full path to the desired mocked element, and a real class
     |
     | Format of each item is:
     |
@@ -74,9 +74,10 @@ return [
     | Mocked Models
     |--------------------------------------------------------------------------
     |
-    | Helper to quickly bind mocked models.
-    | It will use `path_models` to search for the mocked class,the real class,
-    | and it's interface on their respective directories.
+    | Quick shortcut to bind models.
+    |
+    | It will use all `path_*` options to search for the real class, the mock model
+    | and it's interface.
     |
     | 'mocked_models' => [
     |
@@ -99,8 +100,8 @@ return [
     | Base Namespace
     |--------------------------------------------------------------------------
     |
-    | Added as a simple way to change the way to bind models. You usually won't
-    | need to modify this
+    | Added to support complex namespacing. You most likely won't have to
+    | modify this value
     |
     */
 
@@ -113,12 +114,12 @@ return [
     | Faker extra providers
     |--------------------------------------------------------------------------
     |
-    | To generate better content for your site you can specify faker providers
-    | classes here and they will be added automatically when creating the
-    | singleton instance.
+    | To generate better fake content for your application, you can specify here
+    | faker provider classes, and they will be added automatically when creating
+    | our singleton faker instance.
     |
-    | Here as a working example, you can use a new image provider
-    | to generate Picsum URL's instead of the default Lorempixel ones
+    | Below as a working example, we created a provider to generate images
+    | based on Picsum instead of Lorempixel default ones.
     |
     */
 
@@ -135,19 +136,21 @@ return [
     |--------------------------------------------------------------------------
     |
     | When generating dynamic fields, we use URL parameters to modify them
-    | These are the options to configure them
+    | These are the options to configure them.
     |
     */
 
     'dynamic_fields' => [
 
+        // Enable/disable dynamically controlled fields
         'enabled' => false,
 
+        // URL prefix for field names
         'prefix' => 'ls',
 
-        // Edge values for form controls
+        // Edge values to setup our panel controls
         'defaults' => [
-            'sentence'  => [ 'min' => 3, 'max' => 20 ],
+            'sentence' => [ 'min' => 3, 'max' => 20 ],
             'text' => [ 'min' => 250, 'max' => 2000 ]
         ]
 
@@ -155,21 +158,14 @@ return [
 
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Addons
-    |--------------------------------------------------------------------------
-    |
-    | Space reserved to setup Live Statics Addons if needed
-    |
-    */
 
     /*
     |--------------------------------------------------------------------------
     | Twill helpers
     |--------------------------------------------------------------------------
     |
-    | Support for images and the block builder
+    | Twill is a CMS solution developed by Area17. Here we setup a few defaults
+    | to help you getting started quickly.
     |
     */
 
@@ -213,12 +209,15 @@ return [
     ],
 
 
+
+
     /*
     |--------------------------------------------------------------------------
     | Interface mapper
     |--------------------------------------------------------------------------
     |
-    | This is just a shortcut for when you want to instantiate interfaces.
+    | Shortcut to instantiate interfaces.
+    | Sometimes namespaces gets too long, this way we can shorten them.
     | A Facade is provided for this task:
     |
     | \InterfaceMapper::resolve('twill.carousel')

@@ -19,7 +19,7 @@ Let's explore a few links:
 
 Notice the Projects list. It's just a simple loop within an Eloquent model collection.
 
-On the second link, it's also a collection, but instead of Eloquent, it's using our mocked models. It's using the same views and controller.
+The second link, is also a collection, but instead of Eloquent it's using our mocked models. Views and controller are the same for both URL's.
 
 
 # Install
