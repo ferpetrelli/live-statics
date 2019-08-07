@@ -9,7 +9,9 @@ use Illuminate\Foundation\AliasLoader;
 use Petrelli\LiveStatics\Commands\CreateMockedModel;
 use Petrelli\LiveStatics\Commands\CreateMockedClass;
 use Petrelli\LiveStatics\Facades\DynamicParams;
+use Petrelli\LiveStatics\Facades\InterfaceMapperFacade;
 use Petrelli\LiveStatics\Helpers\DynamicManager;
+use Petrelli\LiveStatics\Helpers\InterfaceMapper;
 use Petrelli\LiveStatics\Helpers\Faker\Factory as MiddlewareFactory;
 
 class BaseServiceProvider extends ServiceProvider
