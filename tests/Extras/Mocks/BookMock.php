@@ -12,6 +12,7 @@ class BookMock extends BaseMock implements BookInterface
 
 	public static $baseInterface = BookInterface::class;
 
+	protected $primaryKey = 'slug';
 
 	// Mostly used to ignore eloquent scopes
 	protected $returnSelfMethods = [
