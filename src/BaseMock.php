@@ -221,7 +221,7 @@ class BaseMock implements Arrayable, UrlRoutable
 
     }
 
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
 
         return $this;
