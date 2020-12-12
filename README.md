@@ -2,11 +2,24 @@
 
 [![Build Status](https://travis-ci.org/ferpetrelli/live-statics.svg?branch=master)](https://travis-ci.org/ferpetrelli/live-statics)
 
-Live-Statics is an open source Laravel package that will help you quickly build prototypes and static pages facilitating data injection into real views. Because all mocked objects will behave as the real ones you won't have to spend any time with integration tasks.
+The `petrelli\live-statics` package provides a quick way to generate and integrate fake prototypes into our system. Mocked objects can easily be model to behave as the real ones, so you won't have to spend any time with integration tasks.
 
-Both real and mocked data sources will live together so you will be able you to switch between them at any time. Also because our fake objects will behave as real, a fully functional 'live-static' version of your web application will be accessible to explore and click around.
+Both real and mocked data sources will live together so you will be able you to switch between them at any time by simply changing the subdomain.
 
-Almost any generated content can be parametrized, so your live-statics can be modified in real time by just passing some URL parameters. This will come incredibly handy to perform visual QA, client presentations, and simply just to have a glance on how your site will behave with dynamic content.
+A great secondary effect is that because our fake objects behave as real, a fully functional 'live static' version of your web application will be accessible to explore and click around.
+
+Faker content can be parametrized, so your 'live statics' will change by just passing some URL parameters. This will come incredibly handy to perform visual QA, client presentations, and simply just to have a glance on how your site will behave with different types of content.
+
+# Quick demo
+
+Let's explore a few links:
+
+1. <a href="http://fernandopetrelli.com" target="_blank">Open</a>. A real personal website.
+2. <a href="http://static.fernandopetrelli.com" target="_blank">Open</a>. Same URL with a `static` subdomain.
+
+Notice the Projects list. It's just a simple loop within an Eloquent model collection.
+
+The second link, is also a collection, but instead of Eloquent it's using our mocked models. Views and controller are the same for both URL's.
 
 
 # Install
@@ -28,7 +41,17 @@ Or directly add it to your composer.json
 And run `composer update`.
 
 
-2. Publish configuration files and the Service Provider
+2. If you have Package Auto-discovery (Laravel 5.5+ by default) skip to step 3, otherwise you'll have to manually add the service provider to your `config/app.php` file.
+
+```php
+'providers' => [
+    //...
+    Petrelli\LiveStatics\BaseServiceProvider::class,
+    //...
+]
+```
+
+3. Publish configuration files and the Service Provider
 
 ```
 php artisan vendor:publish --provider="Petrelli\LiveStatics\BaseServiceProvider"
@@ -41,74 +64,133 @@ php artisan vendor:publish --provider="Petrelli\LiveStatics\BaseServiceProvider"
 ## Create a new mocked class, and it's interface
 
 
-1. Run the command:
+1. Generate a new Mocked class (e.g. Project). Run the command:
 
 ```bash
-php artisan live-statics:class Book
+php artisan live-statics:class Project
 ```
 
-This will use the configuration values inside `config/live-statics.php` to generate a base mocked class `Book`, plus an interface `BookInterface` that will allow you to bind it properly.
+This will use the configuration values inside `config/live-statics.php` to generate a base mocked class `Project`, plus an interface `ProjectInterface` that will allow you to bind it to the real or fake implementation.
 
 2. Add binding instructions to `config/live-statics.php`
 
 ```php
 'mocked_classes' => [
-    \App\Interfaces\BookInterface::class => [
-        \App\Mocks\BookMock::class, \App\Book::class
+    \App\Interfaces\ProjectInterface::class => [
+        \App\Mocks\ProjectMock::class, \App\Project::class
     ],
 ],
 ```
 
-The convention is the following:
+Convention is the following:
 
 ```
 'mocked_classes' => [
     INTERFACE1 => [ MOCKED_CLASS1, REAL_CLASS1 ],
-    INTERFACE2 => [ MOCKED_CLASS2, REAL_CLASS2 ],
-    ...
+    //...
     INTERFACEn => [ MOCKED_CLASSn, REAL_CLASSn ],
 ]
 ```
 
 This will be enough to use your interfaces to inject them properly!
 
+If your real class is not ready yet and you just want a quick prototype, pass `null` as the second element of the array.
 
-3. Make your 'Real classes' implement the newly created interface
+```
+'mocked_classes' => [
+    INTERFACE1 => [ MOCKED_CLASS1, null ],
+    //...
+]
+```
 
 
-For example:
+## Once you have your Mocked classes, remember to implement the interface in the real one.
+
+Following our project example:
 
 ```php
-use App\Interfaces\BookInterface;
+use App\Interfaces\ProjectInterface;
 
-class Book extends Model implements BookInterface
+class Project extends Model implements ProjectInterface
 {
     #...
 }
 ```
 
-## Create a new mocked Eloquent model
+## Using your newly created mocked elements
 
-This is a special case of a general class. The package will provide a quick way for you to bind models as most systems will mock mainly them.
+Let's use a controller as an example:
+
+```php
+use \App\Interfaces\ProjectInterface;
+
+class Controller extends BaseController
+{
+    public function index(ProjectInterface $model)
+    {
+        # Use your Project instance as normal
+        # $model->all();
+        # $model->published()->get();
+    }
+}
+
+```
+
+Here we inject `ProjectInterface` to the controller. This will bind the real, or mocked implementation depending on the subdomain.
+
+If you are not confortable injecting dependencies as formal parameters you can use Laravels `app` function:
+
+```php
+use \App\Interfaces\ProjectInterface;
+
+
+class Controller extends BaseController
+{
+    public function index()
+    {
+        $model = app(ProjectInterface:class);
+
+        # Use your Project instance as normal
+        # $model->all();
+        # $model->published()->get();
+    }
+}
+
+```
+
+
+That's it!
+
+You can change this subdomain modifying the `subdomain` option inside `config/live-statics.php`.
+
+
+## Shortcut for Eloquent models
+
+This is a special case of a general class.
+
+The package will provide a quick way for you to bind models, as most applications will be mainly mocking Eloquent models.
 
 
 1. Generate the mocked model
 
 ```bash
-php artisan live-statics:model Book
+php artisan live-statics:model Project
 ```
 
 2. Add binding instructions to `config/live-statics.php`
 
 ```php
 'mocked_models' => [
-    'Book',
+    'Project',
 ]
 ```
 
-Here is the main difference with a regular class, the package will use the path configuration for models provided on `config/live-statics.php` to find and bind them properly.
+Notice instead of `mocked_classes`, we use `mocked_models`, and just pass the model's name.
 
-3. Make your 'Real Eloquent model' implement the newly created interface
+The package will use path configurations for models provided on `config/live-statics.php` to bind them properly.
+
+
+
 
 
 ## Add a custom namespace when creating new mocked classes or models
@@ -119,81 +201,21 @@ This can be easily done passing by a second parameter to both commands:
 
 ```bash
 # Prepend Api to the new class namespace
-php artisan live-statics:class Book Api
+php artisan live-statics:class Project Api
 
 # Prepend Api\Version1 to the new class namespace
-php artisan live-statics:class Book Api\\Version1 #or
-php artisan live-statics:class Book Api/Version1
+php artisan live-statics:class Project Api\\Version1 #or
+php artisan live-statics:class Project Api/Version1
 
 # Prepend Api to the new model namespace
-php artisan live-statics:model Book Api
+php artisan live-statics:model Project Api
 
 # Prepend Api\Version1 to the new model namespace
-php artisan live-statics:model Book Api\\Version1 #or
-php artisan live-statics:model Book Api/Version1
+php artisan live-statics:model Project Api\\Version1 #or
+php artisan live-statics:model Project Api/Version1
 ```
 
 When creating models, the namespace specified within `config/live-statics.php` will be added automatically.
-
-
-## Using your newly created mocked elements
-
-Let's use controllers as an example:
-
-```php
-use \App\Interfaces\BookInterface;
-
-
-class Controller extends BaseController
-{
-    public function index(BookInterface $model)
-    {
-        # Use your Book instance as normal
-        # $model->all();
-        # $model->published()->get();
-    }
-}
-
-```
-
-If you are not confortable injecting dependencies as formal parameters you can use the `app` function provided by laravel:
-
-```php
-use \App\Interfaces\BookInterface;
-
-
-class Controller extends BaseController
-{
-    public function index()
-    {
-        $model = app(BookInterface:class);
-
-        # Use your Book instance as normal
-        # $model->all();
-        # $model->published()->get();
-    }
-}
-
-```
-
-
-Once interfaces are being used to determine which instance (real or fake) your site shall use, you can just proceed to enable/disable live-statics by adding your configured subdomain (By default 'static').
-
-For example:
-
-```bash
-
-# Real site
-live.com
-
-# Live statics site
-static.live.com
-
-```
-
-That's it!
-
-You can change this subdomain modifying the `subdomain` option inside `config/live-statics.php`.
 
 
 # Extra functionalities

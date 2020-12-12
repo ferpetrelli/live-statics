@@ -22,7 +22,7 @@ class BaseMock implements Arrayable, UrlRoutable
     public $mockedObject;
 
     // Set 'slug' as the default attribute to build URL's
-    protected $primaryKey = 'slug';
+    protected $primaryKey = 'id';
 
     // Appends these attribute/relations when serializing this object
     protected $appends = [];
@@ -46,11 +46,11 @@ class BaseMock implements Arrayable, UrlRoutable
         // Define base methods and attributes for the mocked model
         static::define($mock);
 
-        // Return a new container object with an underline mocked instance.
-        // This is done this way to provide a layer on top of the mocked object
-        // so we can define there new functions and/or attributes
-        // that we can use at execution time. This will solve the problem when we
-        // instantiate the same object inside itself.
+        // Return a new container object using an underline mocked instance.
+        // We provide a layer on top of the mocked object so we can define there
+        // new functions and/or attributes that can be used at execution time.
+        // This will solve a problem presented when we want to use an instance of
+        // ourselves creating a stack overflow.
         return new static($mock);
 
     }
@@ -72,13 +72,15 @@ class BaseMock implements Arrayable, UrlRoutable
     /**
      * ---------------------------------------------------------------------------------
      *
-     *  The following functions are magic methods that allows a better definition of
-     *  mocked attributes and functions.
-     *  Basically, if the method or attribute doesn't exists locally,
-     *  we bypass it to the mocked object
+     *  The following functions are php magic method implementations that will
+     *  provide us with more flexibility when defining methods and attributes.
      *
-     *  We also provide the Laravel functionality to define attributes using a function:
-     *  function get[NAME]Attribute() will allow the [NAME] attribute at the object.
+     *
+     *  If the called method or requested attribute doesn't exists in our mocked object,
+     *  we bypass it to the underline mockery object.
+     *
+     *  We also provide Laravels functionality to define attributes using a function:
+     *  function get[NAME]Attribute() will enable the [NAME] attribute.
      *
      * ---------------------------------------------------------------------------------
      */
@@ -151,7 +153,7 @@ class BaseMock implements Arrayable, UrlRoutable
 
     /**
      *
-     *  When transforming to array just use the mocked Object
+     *  When transforming to an array just use the mocked Object
      *  and then add all new local mutated attributes
      *  (get[NAME]Attribute() like function)
      *
@@ -192,10 +194,12 @@ class BaseMock implements Arrayable, UrlRoutable
     }
 
     /**
+     * ---------------------------------------------------------------------------------
      *
      * UrlRoutable interface implementation
      * This is used to be passed into a route() and generate correct URL's
      *
+     * ---------------------------------------------------------------------------------
      */
 
     public function getRouteKey()
