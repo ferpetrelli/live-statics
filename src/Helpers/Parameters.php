@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 namespace Petrelli\LiveStatics\Helpers;
 
 /**
@@ -17,7 +19,7 @@ class Parameters
 
         $prefix = config('live-statics.dynamic_fields.prefix');
 
-        return str_slug(join('-',[$prefix, $type, $element]));
+        return Str::slug(join('-',[$prefix, $type, $element]));
 
     }
 

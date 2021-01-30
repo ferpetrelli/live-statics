@@ -4,6 +4,7 @@ namespace Petrelli\LiveStatics\Tests\Extras\Mocks;
 
 use Petrelli\LiveStatics\Tests\Extras\Interfaces\BookInterface;
 use Petrelli\LiveStatics\BaseMock;
+use Illuminate\Support\Str;
 
 
 class BookMock extends BaseMock implements BookInterface
@@ -26,7 +27,7 @@ class BookMock extends BaseMock implements BookInterface
 		// Attributes
 		$mock->id          = 100;
 		$mock->title       = 'Mocked Book';
-		$mock->slug        = str_slug($mock->title);
+		$mock->slug        = Str::slug($mock->title);
 
         // Dynamic attributes
         $mock->description = app('faker')->dynamic('Description')->text(1000);

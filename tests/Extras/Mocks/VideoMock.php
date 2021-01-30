@@ -4,6 +4,7 @@ namespace Petrelli\LiveStatics\Tests\Extras\Mocks;
 
 use Petrelli\LiveStatics\Tests\Extras\Interfaces\VideoInterface;
 use Petrelli\LiveStatics\BaseMock;
+use Illuminate\Support\Str;
 
 
 class VideoMock extends BaseMock implements VideoInterface
@@ -27,7 +28,7 @@ class VideoMock extends BaseMock implements VideoInterface
 		// Attributes
 		$mock->id          = 100;
 		$mock->title       = 'Video Title';
-		$mock->slug        = str_slug($mock->title);
+		$mock->slug        = Str::slug($mock->title);
         $mock->url         = 'http://youtube.com';
 
         // Dynamic attributes
