@@ -24,7 +24,7 @@ class {{className}}Mock extends BaseMock implements {{className}}Interface
 		// Attributes
 		$mock->id          = rand(1,1000);
 		$mock->title       = app('faker')->name();
-		$mock->slug        = Str::slug($mock->title);
+		$mock->slug        = \Str::slug($mock->title);
 
 	}
 

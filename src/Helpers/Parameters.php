@@ -19,7 +19,7 @@ class Parameters
 
         $prefix = config('live-statics.dynamic_fields.prefix');
 
-        return Str::slug(join('-',[$prefix, $type, $element]));
+        return \Str::slug(join('-',[$prefix, $type, $element]));
 
     }
 

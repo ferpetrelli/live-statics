@@ -25,10 +25,10 @@ class VideoMock extends BaseMock implements VideoInterface
 	public static function define(&$mock)
 	{
 
-		// Attributes
+		// Attributes   
 		$mock->id          = 100;
 		$mock->title       = 'Video Title';
-		$mock->slug        = Str::slug($mock->title);
+		$mock->slug        = \Str::slug($mock->title);
         $mock->url         = 'http://youtube.com';
 
         // Dynamic attributes
